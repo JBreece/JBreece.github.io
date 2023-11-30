@@ -95,7 +95,7 @@ body {
 @font-face {
 	font-family: "Sdasian-WyDon";
 	/*src: url('https://JBreece.github.io/Sdasian-WyDon.TTF');*/
-	src: Sdasian-WyDon.TTF;
+	src: url('./Sdasian-WyDon.TTF');
 }
 
 h1 {
