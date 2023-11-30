@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+	background-color: black;
+	color: white;
+}
+
+#left-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+#game-container {
+    width: 50%;
+    height: 440px;
+    border: 2px solid #000;
+    margin: 20px auto;
+    text-align: center;
+    line-height: 200px;
+}
+
+/*
+#user-spell-parent-container {
+	width: 220px;
+    height: 107px;
+    border: 2px solid #000;
+    margin: 20px auto;
+    text-align: center;
+    line-height: 200px;
+}
+*/
+
+
+#user-spell-container {
+	display: none;
+	width: 100px;
+    height: 100px;
+    border: 1px solid #000;
+    margin: 20px auto;
+    text-align: center;
+    line-height: 200px;
+	position: relative;
+	left: 50%;
+}
+
+#timer {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#user-input {
+    text-align: center;
+}
+
+#start-button {
+	text-align: center;
+	margin: 20px auto;
+}
+
+#try-again-button {
+	display: none;
+    border: none !important;
+	text-align: center;
+	margin: 20px auto;
+}
+
+.start {
+	margin: 0;
+	position: relative;
+	left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: #04AA6D; /* Green */
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.try-again {
+	margin: 0;
+	position: absolute;
+	top: 80%;
+	left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: #04AA6D; /* Green */
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+@font-face {
+	font-family: "Sdasian-WyDon";
+	src: url('Sdasian-WyDon.TTF');
+}
+
+h1 {
+	text-align: center;
+	font-size: 100px;
+	display: inline-block;
+	position: relative;
+	top: 0%;
+	left: 20%;
+}
+
+.alignleft {
+	float: left;
+	width: 250px;
+    height: 100px;
+    border: 1px solid #000;
+    margin: 20px auto;
+	margin-left: 100px;
+	margin-top: 100px;
+}
+
+.alignright {
+	float: right;
+	width: 200px;
+    height: 100px;
+    border: 1px solid #000;
+    margin: 20px auto;
+	margin-right: 100px;
+	margin-top: 100px;
+}
+
+.sameline {
+	display: grid;
+	align-items: center;
+	grid-template-columns: 1fr 1fr 1fr;
+	column-gap: 5px;
+	margin: 5px auto;
+}

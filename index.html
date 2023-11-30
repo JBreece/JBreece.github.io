@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Hwei Invoker Game</title>
+</head>
+<body>
+	<h1 style="font-family:Sdasian-WyDon">Hwei Game</h1>
+	<div class=alignleft>
+		<h2>How to play</h2>
+		<p style="line-height: 1.6;">Hwei is a champion from the computer game, "League of Legends." He uses a combination of key presses to cast a spell. When you see the spell icon appear on the screen, press the corresponding key combo to cast the spell! Good luck.</p>
+	</div>
+	<div class=alignright>
+		<h2>Controls:</h2>
+		<h4>1st key</h4>
+		<div class=sameline>
+			<img src="spells/Hwei_Subject_Disaster.jpg" alt="hwei" width="70" height="70">
+			<p>Q</p>
+		</div>
+		<div class=sameline>
+			<img src="spells/Hwei_Subject_Serenity.jpg" alt="hwei" width="70" height="70">
+			<p>W</p>
+		</div>
+		<div class=sameline>
+			<img src="spells/Hwei_Subject_Torment.jpg" alt="hwei" width="70" height="70">
+			<p>E</p>
+		</div>
+		<h4>Combine with a 2nd key to create a complete spell!</h4>
+		<h4>...or, clear your brush with R</h4>
+		<div class=sameline>
+			<img src="spells/Hwei_Wash_Brush.jpg" alt="hwei" width="70" height="70">
+		<p>R</p>
+		</div>
+	</div>
+    <div id="game-container">
+        <img src="hwei_cheatsheet.png" alt="hwei" width="768" height="432">
+    </div>
+	<button type="button" id="start-button" class="start" onclick="alert('start')">BEGIN</button>
+<!--	<div class="clearfix" id="user-spell-parent-container">-->
+		<div id="user-spell-container">
+		</div>
+<!--</div>-->
+    <div id="timer">Time: <span id="time">7</span></div>
+    <div id="user-input">
+        <label for="keypress">Enter Key Press:</label>
+        <input style="background-color:black;" type="text" id="keypress" maxlength="0"/>
+    </div>
+	<button type="button" id="try-again-button" class="try-again" onclick="alert('Hello world!')">TRY AGAIN</button>
+    <script src="script.js"></script>
+</body>
+</html>
