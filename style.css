@@ -94,7 +94,7 @@ body {
 
 @font-face {
 	font-family: "Sdasian-WyDon";
-	src: url('Sdasian-WyDon.TTF');
+	src: url('/Sdasian-WyDon.TTF');
 }
 
 h1 {
