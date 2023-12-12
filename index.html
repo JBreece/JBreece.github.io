@@ -10,9 +10,28 @@
 	<div id="hwei-title">
 		<img src="hwei_title.jpg" alt="hwei_title" width="600" height="150">
 	</div>
+	<!--<iframe src="250-milliseconds-of-silence.mp3" allow="autoplay" id="audio" style="display: none"></iframe>-->
+	<audio hidden autoplay loop>
+		<source src='Hwei Champion Theme _ League of Legends.mp3' type='audio/mp3'>
+	</audio>
+	<!--can't get this audio auto-play thing working for now.  leaving it in for now to work on later-->
 	<div class=alignleft>
 		<h2>How to play</h2>
 		<p style="line-height: 1.6;">Hwei is a champion from the computer game, "League of Legends." He uses a combination of key presses to cast a spell. When you see the spell icon appear on the screen, press the corresponding key combo to cast the spell! Good luck.</p>
+		<h2 style="line-height: 1.6;">Pick a game mode...</h2>
+		<!--<p style="line-height: 1.6;">and try to beat your high score!</p>-->
+		<div class=sameline>
+			<button type="button" id="game-mode-button-survival" class="game-mode-button" onclick="alert('Hello world!')">SURVIVAL</button>
+			<p id = 'survival-high-score'>0:00</p>
+		</div>
+		<div class=sameline>
+			<button type="button" id="game-mode-button-spell-rush" class="game-mode-button" onclick="alert('Hello world!')">SPELL RUSH</button>
+			<p id = 'spell-rush-high-score'>0 spells</p>
+		</div>
+		<div class=sameline>
+			<button type="button" id="game-mode-button-situation" class="game-mode-button" onclick="alert('Hello world!')">SITUATION</button>
+			<p id = 'situation-high-score'>0:00</p>
+		</div>
 	</div>
 	<div class=alignright>
 		<h2>Controls:</h2>

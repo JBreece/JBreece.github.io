@@ -18,6 +18,14 @@ body {
     line-height: 200px;
 }
 
+#hwei-title {
+	display: inline-block;
+	position: relative;
+	top: 5%;
+	left: 15%;
+	text-align: center;
+}
+
 /*
 #user-spell-parent-container {
 	width: 220px;
@@ -92,9 +100,18 @@ body {
 	font-size: 16px;
 }
 
+.game-mode-button {
+	background-color: #808080;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+}
+
 @font-face {
 	font-family: "Sdasian-WyDon";
-	src: url('Sdasian-WyDon.TTF') format('truetype');
+	src: url('Sdasian-WyDon.TTF');
 }
 
 h1 {
@@ -104,14 +121,6 @@ h1 {
 	position: relative;
 	top: 0%;
 	left: 20%;
-}
-
-#hwei-title {
-	display: inline-block;
-	position: relative;
-	top: 5%;
-	left: 15%;
-	text-align: center;
 }
 
 .alignleft {
