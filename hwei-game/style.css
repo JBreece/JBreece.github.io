@@ -18,6 +18,14 @@ body {
     line-height: 200px;
 }
 
+#hwei-title {
+	display: inline-block;
+	position: relative;
+	top: 5%;
+	left: 15%;
+	text-align: center;
+}
+
 /*
 #user-spell-parent-container {
 	width: 220px;
