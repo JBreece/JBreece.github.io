@@ -1,31 +1,36 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Dev Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>My Game & Dev Portfolio</h1>
+    <h1>My Dev Portfolio</h1>
+    <p class="subtitle">Welcome! This is my portfolio of personal projects including game development and other dev-related work.</p>
     <nav>
-      <ul>
-        <li><a href="hwei-game/">Hwei Game</a></li>
-        <!-- Add more project links here -->
-      </ul>
+      <a href="index.html" class="nav-link">Projects</a>
+      <a href="#resources" class="nav-link">Resources</a>
+      <a href="#contact" class="nav-link">Contact</a>
     </nav>
   </header>
 
   <main>
-    <section>
-      <h2>Welcome!</h2>
-      <p>This is my portfolio of personal projects including game development and other dev-related work.</p>
+    <section class="projects-grid">
+      <div class="project-card">
+        <img src="hwei-game/thumbnail.png" alt="Hwei Game thumbnail" />
+		<a href="hwei-game/" class="button">Play</a>
+        <h2>Hwei Game</h2>
+        <p>A memorization game for learning Hwei's abilities in League of Legends!</p>
+      </div>
+      <!-- Add more project cards here -->
     </section>
   </main>
 
   <footer>
-    <p>© 2025 Joshua Breece</p>
+    <p>© 2025 Joshua Breece. All rights reserved.</p>
   </footer>
 </body>
 </html>

@@ -1,144 +1,124 @@
+/* Reset and basic layout */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-	background-color: black;
-	color: white;
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 20px;
 }
 
-#left-container {
-	display: flex;
-	justify-content: space-between;
-}
-
-#game-container {
-    width: 50%;
-    height: 440px;
-    border: 2px solid #000;
-    margin: 20px auto;
-    text-align: center;
-    line-height: 200px;
-}
-
-/*
-#user-spell-parent-container {
-	width: 220px;
-    height: 107px;
-    border: 2px solid #000;
-    margin: 20px auto;
-    text-align: center;
-    line-height: 200px;
-}
-*/
-
-
-#user-spell-container {
-	display: none;
-	width: 100px;
-    height: 100px;
-    border: 1px solid #000;
-    margin: 20px auto;
-    text-align: center;
-    line-height: 200px;
-	position: relative;
-	left: 50%;
-}
-
-#timer {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-#user-input {
-    text-align: center;
-}
-
-#start-button {
-	text-align: center;
-	margin: 20px auto;
-}
-
-#try-again-button {
-	display: none;
-    border: none !important;
-	text-align: center;
-	margin: 20px auto;
-}
-
-.start {
-	margin: 0;
-	position: relative;
-	left: 50%;
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	background-color: #04AA6D; /* Green */
-	color: white;
-	padding: 15px 32px;
-	text-align: center;
-	text-decoration: none;
-	font-size: 16px;
-}
-
-.try-again {
-	margin: 0;
-	position: absolute;
-	top: 80%;
-	left: 50%;
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	background-color: #04AA6D; /* Green */
-	color: white;
-	padding: 15px 32px;
-	text-align: center;
-	text-decoration: none;
-	font-size: 16px;
-}
-
-.game-mode-button {
-	background-color: #808080;
-	color: white;
-	padding: 15px 32px;
-	text-align: center;
-	text-decoration: none;
-	font-size: 16px;
-}
-
-@font-face {
-	font-family: "Sdasian-WyDon";
-	src: url('Sdasian-WyDon.TTF');
+/* Header section */
+header {
+  text-align: center;
+  margin-bottom: 40px;
 }
 
 h1 {
-	text-align: center;
-	font-size: 100px;
-	display: inline-block;
-	position: relative;
-	top: 0%;
-	left: 20%;
+  font-size: 3rem;
+  margin-bottom: 10px;
 }
 
-.alignleft {
-	float: left;
-	width: 250px;
-    height: 100px;
-    border: 1px solid #000;
-    margin: 20px auto;
-	margin-left: 100px;
-	margin-top: 100px;
+.subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
 }
 
-.alignright {
-	float: right;
-	width: 200px;
-    height: 100px;
-    border: 1px solid #000;
-    margin: 20px auto;
-	margin-right: 100px;
-	margin-top: 100px;
+/* Navigation */
+nav {
+  margin-bottom: 30px;
 }
 
-.sameline {
-	display: grid;
-	align-items: center;
-	grid-template-columns: 1fr 1fr 1fr;
-	column-gap: 5px;
-	margin: 5px auto;
+.nav-link {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #0077cc;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Project grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto 50px auto;
+}
+
+.project-card {
+  position: relative;
+  overflow: hidden;
+  width: 400px;
+  height: 300px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.project-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.3s ease;
+  display: block;
+  border-radius: 8px;
+}
+
+.project-card:hover img {
+  filter: grayscale(100%);
+}
+
+.project-card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.project-card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0077cc;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.project-card .button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.project-card:hover .button {
+  opacity: 1;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
 }
