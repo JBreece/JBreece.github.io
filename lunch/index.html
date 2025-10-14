@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lunch Spinner 🍴</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background: #fafafa;
+      color: #333;
+      padding: 40px;
+    }
+
+    h1 { margin-bottom: 10px; }
+
+    canvas {
+      margin-top: 20px;
+      border: 2px solid #ddd;
+      border-radius: 50%;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #0078d7;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover { background: #005fa3; }
+button:hover { transform: scale(1.05); }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input {
+      padding: 6px 10px;
+      margin: 4px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    #filterContainer button.active {
+      background: #00a86b;
+    }
+
+    #restaurantList {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+#filterContainer button {
+  margin: 4px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #ddd;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+#filterContainer button.active {
+  background: #00a86b;
+  color: white;
+}
+
+body.veto #filterContainer button.active {
+  background: #d9534f;
+  color: white;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  display: inline-block;
+}
+
+body {
+  background: linear-gradient(135deg, #f7f9fc, #eaf3ff);
+}
+
+
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/gh/zarocknz/javascript-winwheel/Winwheel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+</head>
+<body>
+<div class="card">
+  <h1>Lunch Spinner 🍴</h1>
+  <canvas id="wheel" width="400" height="400"></canvas><br>
+  <button id="spinBtn">Spin!</button>
+
+  <div class="controls">
+    <h2>Add a Restaurant</h2>
+    <input id="nameInput" placeholder="Restaurant name">
+    <input id="tagsInput" placeholder="Tags (comma-separated)">
+    <button id="addBtn">Add</button>
+
+    <h2>Filter by Category</h2>
+<button id="toggleAllBtn">Select All</button>
+<button id="vetoModeBtn">Veto Mode: OFF</button>
+<div id="filterContainer"></div>
+
+  <ul id="restaurantList"></ul>
+</div>
+
+  <script>
+let vetoMode = false;
+    let restaurants = JSON.parse(localStorage.getItem('restaurants')) || [
+      { name: "Chipotle", tags: ["Mexican", "Fast Casual"] },
+      { name: "Subway", tags: ["Sandwich", "Fast Food"] },
+      { name: "Panda Express", tags: ["Asian", "Fast Food"] },
+    ];
+
+    let activeFilters = [];
+    let wheel;
+
+    function randomColor() {
+      const hue = Math.floor(Math.random() * 360);
+      return `hsl(${hue}, 70%, 60%)`;
+    }
+
+    function drawWheel(items) {
+      const canvas = document.getElementById('wheel');
+      const segments = items.map(r => ({ fillStyle: randomColor(), text: r.name }));
+      wheel = new Winwheel({
+        canvasId: 'wheel',
+        numSegments: segments.length,
+        outerRadius: 180,
+        segments: segments,
+        animation: {
+          type: 'spinToStop',
+          duration: 4,
+          spins: 8,
+          callbackFinished: announceWinner
+        }
+      });
+    }
+
+    function announceWinner(segment) {
+      alert(`🎉 Winner: ${segment.text}!`);
+    }
+
+    function refreshList() {
+      const list = document.getElementById('restaurantList');
+      list.innerHTML = '';
+      restaurants.forEach((r, i) => {
+        const li = document.createElement('li');
+        li.textContent = `${r.name} (${r.tags.join(', ')}) `;
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '✕';
+        removeBtn.onclick = () => removeRestaurant(i);
+        li.appendChild(removeBtn);
+        list.appendChild(li);
+      });
+      updateFilters();
+      saveData();
+      drawWheel(filteredRestaurants());
+    }
+
+    function removeRestaurant(index) {
+      restaurants.splice(index, 1);
+      refreshList();
+    }
+
+    function saveData() {
+      localStorage.setItem('restaurants', JSON.stringify(restaurants));
+    }
+
+    function addRestaurant() {
+      const name = document.getElementById('nameInput').value.trim();
+      const tags = document.getElementById('tagsInput').value.split(',')
+        .map(t => t.trim()).filter(Boolean);
+      if (!name) return alert("Enter a name first!");
+      restaurants.push({ name, tags });
+      document.getElementById('nameInput').value = '';
+      document.getElementById('tagsInput').value = '';
+      refreshList();
+    }
+
+function updateFilters() {
+  const allTags = [...new Set(restaurants.flatMap(r => r.tags))];
+  const container = document.getElementById('filterContainer');
+  container.innerHTML = '';
+
+  // Update Select/Deselect All button text
+  const toggleBtn = document.getElementById('toggleAllBtn');
+  toggleBtn.textContent = activeFilters.length === allTags.length
+    ? 'Deselect All'
+    : 'Select All';
+
+  allTags.forEach(tag => {
+    const btn = document.createElement('button');
+    btn.textContent = tag;
+    if (activeFilters.includes(tag)) btn.classList.add('active');
+    btn.onclick = () => toggleFilter(tag);
+    container.appendChild(btn);
+  });
+}
+
+function toggleFilter(tag) {
+  if (activeFilters.includes(tag))
+    activeFilters = activeFilters.filter(t => t !== tag);
+  else
+    activeFilters.push(tag);
+
+  refreshList();
+}
+
+function toggleAllFilters() {
+  const allTags = [...new Set(restaurants.flatMap(r => r.tags))];
+  if (activeFilters.length === allTags.length) {
+    // All selected → clear filters
+    activeFilters = [];
+  } else {
+    // Not all selected → select all
+    activeFilters = [...allTags];
+  }
+  refreshList();
+}
+
+document.getElementById('toggleAllBtn').addEventListener('click', toggleAllFilters);
+document.getElementById('vetoModeBtn').addEventListener('click', () => {
+  vetoMode = !vetoMode;
+  document.body.classList.toggle('veto', vetoMode);
+  document.getElementById('vetoModeBtn').textContent = `Veto Mode: ${vetoMode ? 'ON' : 'OFF'}`;
+  refreshList();
+});
+
+
+
+function filteredRestaurants() {
+  if (activeFilters.length === 0) return restaurants;
+
+  if (vetoMode) {
+    // Exclude restaurants that match ANY active tag
+    return restaurants.filter(r => !r.tags.some(t => activeFilters.includes(t)));
+  } else {
+    // Include restaurants that match ANY active tag
+    return restaurants.filter(r => r.tags.some(t => activeFilters.includes(t)));
+  }
+}
+
+// Add a slow idle wobble animation for fun
+function idleWobble() {
+  gsap.to('#wheel', {
+    rotation: "+=3",
+    duration: 3,
+    yoyo: true,
+    repeat: -1,
+    ease: "sine.inOut"
+  });
+}
+idleWobble();
+
+function announceWinner(segment) {
+  document.querySelector('h1').textContent = `🎉 ${segment.text}!`;
+}
+
+
+
+    document.getElementById('addBtn').addEventListener('click', addRestaurant);
+    document.getElementById('spinBtn').addEventListener('click', () => {
+      if (wheel) wheel.startAnimation();
+    });
+
+    refreshList();
+  </script>
+</body>
+</html>
