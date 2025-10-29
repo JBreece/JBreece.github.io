@@ -81,15 +81,89 @@ body.veto #filterContainer button.active {
 }
 
 .card {
-  background: white;
+  background: rgba(255,255,255,0.8);
   padding: 30px;
   border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   display: inline-block;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
 body {
   background: linear-gradient(135deg, #f7f9fc, #eaf3ff);
+}
+
+/* === Glow and polish tweaks === */
+button {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Make tag buttons look like chips */
+#restaurantList button {
+  background: #f1f3f6;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.9em;
+}
+
+#restaurantList button:hover {
+  background: #dfe9ff;
+}
+
+/* Add a subtle hover effect on restaurant list items */
+#restaurantList li {
+  background: rgba(255,255,255,0.8);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 8px 0;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+#restaurantList li:hover {
+  background: white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* Small accent border on active mode */
+body.veto .card {
+  border: 2px solid #d9534f;
+}
+
+body:not(.veto) .card {
+  border: 2px solid #00a86b;
+}
+
+#wheelPointer {
+  font-size: 2rem;
+  text-align: center;
+  color: #333;
+  margin-bottom: -20px;
+  user-select: none;
+  transform: translateY(10px);
+}
+
+.pulse-element {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1) translateY(25%);
+  }
+  50% {
+    transform: scale(1.2) translateY(10%);
+  }
+  100% {
+    transform: scale(1) translateY(25%);
+  }
 }
 
 
@@ -101,6 +175,7 @@ body {
 <body>
 <div class="card">
   <h1>Lunch Spinner 🍴</h1>
+  <div id="wheelPointer">▼</div>
   <canvas id="wheel" width="400" height="400"></canvas><br>
   <button id="spinBtn">Spin!</button>
 
@@ -154,23 +229,107 @@ let vetoMode = false;
     function announceWinner(segment) {
       alert(`🎉 Winner: ${segment.text}!`);
     }
+	
+	function removeTag(restaurantIndex, tagIndex) {
+	  restaurants[restaurantIndex].tags.splice(tagIndex, 1);
+	  refreshList();
+	}
 
-    function refreshList() {
-      const list = document.getElementById('restaurantList');
-      list.innerHTML = '';
-      restaurants.forEach((r, i) => {
-        const li = document.createElement('li');
-        li.textContent = `${r.name} (${r.tags.join(', ')}) `;
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = '✕';
-        removeBtn.onclick = () => removeRestaurant(i);
-        li.appendChild(removeBtn);
-        list.appendChild(li);
-      });
-      updateFilters();
-      saveData();
-      drawWheel(filteredRestaurants());
-    }
+	function addTag(restaurantIndex, inputElement) {
+	  const newTag = inputElement.value.trim();
+	  if (!newTag) return;
+	  const restaurant = restaurants[restaurantIndex];
+	  if (!restaurant.tags.includes(newTag)) {
+		restaurant.tags.push(newTag);
+		inputElement.value = '';
+		refreshList();
+	  } else {
+		alert('That tag already exists.');
+	  }
+	}
+
+	function refreshList() {
+	  const list = document.getElementById('restaurantList');
+	  list.innerHTML = '';
+
+	  restaurants.forEach((r, i) => {
+		const li = document.createElement('li');
+
+		// Restaurant name
+		const nameSpan = document.createElement('strong');
+		nameSpan.textContent = r.name + ' ';
+		li.appendChild(nameSpan);
+		
+		// Edit name button
+		const editBtn = document.createElement('button');
+		editBtn.textContent = '✏️';
+		editBtn.title = 'Edit restaurant name';
+		editBtn.style.marginLeft = '6px';
+		editBtn.onclick = () => {
+		  const newName = prompt('Rename restaurant:', r.name);
+		  if (newName && newName.trim()) {
+			restaurants[i].name = newName.trim();
+			refreshList();
+		  }
+		};
+		li.appendChild(editBtn);
+
+		// Remove restaurant button
+		const removeBtn = document.createElement('button');
+		removeBtn.textContent = '✕';
+		removeBtn.title = 'Remove restaurant';
+		removeBtn.onclick = () => removeRestaurant(i);
+		li.appendChild(removeBtn);
+
+		// Tag section
+		const tagContainer = document.createElement('div');
+		tagContainer.style.marginTop = '6px';
+
+		r.tags.forEach((tag, tagIndex) => {
+		  const tagBtn = document.createElement('button');
+		  tagBtn.textContent = tag + ' ✕';
+		  tagBtn.style.margin = '3px';
+		  tagBtn.style.padding = '4px 8px';
+		  tagBtn.style.border = 'none';
+		  tagBtn.style.borderRadius = '6px';
+		  tagBtn.style.background = '#ddd';
+		  tagBtn.style.cursor = 'pointer';
+		  tagBtn.onclick = () => removeTag(i, tagIndex);
+		  tagContainer.appendChild(tagBtn);
+		});
+
+		// Add tag input and button
+		const addTagInput = document.createElement('input');
+		addTagInput.placeholder = 'New tag';
+		addTagInput.style.marginLeft = '6px';
+		addTagInput.style.padding = '4px 6px';
+		addTagInput.style.borderRadius = '6px';
+		addTagInput.style.border = '1px solid #ccc';
+		addTagInput.style.width = '100px';
+
+		const addTagBtn = document.createElement('button');
+		addTagBtn.textContent = '+';
+		addTagBtn.title = 'Add tag';
+		addTagBtn.style.marginLeft = '4px';
+		addTagBtn.style.padding = '4px 8px';
+		addTagBtn.onclick = () => addTag(i, addTagInput);
+
+		// Allow pressing Enter to add tag
+		addTagInput.addEventListener('keypress', e => {
+		  if (e.key === 'Enter') addTag(i, addTagInput);
+		});
+
+		tagContainer.appendChild(addTagInput);
+		tagContainer.appendChild(addTagBtn);
+		li.appendChild(tagContainer);
+
+		list.appendChild(li);
+	  });
+
+	  updateFilters();
+	  saveData();
+	  drawWheel(filteredRestaurants());
+	}
 
     function removeRestaurant(index) {
       restaurants.splice(index, 1);
@@ -269,6 +428,10 @@ idleWobble();
 
 function announceWinner(segment) {
   document.querySelector('h1').textContent = `🎉 ${segment.text}!`;
+  const pointer = document.getElementById('wheelPointer');
+  if (pointer) {
+    pointer.classList.add('pulse-element');
+  }
 }
 
 
