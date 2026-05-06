@@ -4,84 +4,204 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Press Start 2P', monospace;
-            background-color: #000;
-            color: #00ffcc;
+            font-family: 'Comfortaa', sans-serif;
+            background-color: #F2EAE0;
+            color: #2E4A59;
             margin: 0;
             padding: 20px;
             line-height: 1.6;
         }
         h1 {
             text-align: center;
-            color: #00ffaa;
+            color: #5B7E7F;
+            margin-bottom: 16px;
         }
         #search {
             width: 100%;
-            padding: 10px;
-            font-family: 'Press Start 2P', monospace;
+            padding: 14px 16px;
+            font-family: 'Comfortaa', sans-serif;
             font-size: 12px;
-            background-color: #111;
-            border: 2px solid #00ffcc;
-            color: #00ffcc;
+            background-color: #FFFFFF;
+            border: 2px solid #C3DEDD;
+            color: #2E4A59;
             margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: inset 0 0 0 1px rgba(141,166,173,0.18);
         }
         #search:focus {
             outline: none;
-            border-color: #66ffe0;
+            border-color: #82B2C0;
+            box-shadow: 0 0 0 3px rgba(130,178,192,0.18);
         }
         .recipe {
-            margin-bottom: 20px;
-            border: 2px solid #00ffcc;
-            background-color: #1a1a1a;
+            margin-bottom: 16px;
+            border: 1px solid #C3DEDD;
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: #FFFFFF;
+            box-shadow: 0 20px 40px rgba(81,103,111,0.08);
         }
         .recipe summary {
-            padding: 15px;
-            cursor: pointer;
-            background-color: #111;
-            border-bottom: 1px solid #00ffcc;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 18px 18px 14px;
+            background-color: #DCECE9;
+            border-bottom: 1px solid #C3DEDD;
         }
         .recipe summary:hover {
-            background-color: #00ffaa;
-            color: #000;
+            background-color: #E9F4F2;
+        }
+        .title-label {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: 0.02em;
+            color: #37555D;
         }
         .recipe-content {
-            padding: 10px;
+            padding: 18px;
+            display: grid;
+            gap: 18px;
         }
-        .recipe-text {
+        .recipe-text,
+        .notes-view {
             white-space: pre-wrap;
+            margin: 0;
+            line-height: 1.6;
+            color: #3F5C62;
+        }
+        .recipe-section {
+            padding: 16px;
+            border: 1px solid #E9F4F2;
+            border-radius: 14px;
+            background: #F6F2EC;
+        }
+        .recipe-section.links {
+            border-color: transparent;
+            background: transparent;
+            padding: 0;
+        }
+        .section-title {
+            font-size: 10px;
             margin-bottom: 10px;
+            color: #37555D;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
         }
         .links {
-            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
         }
         .links a {
-            color: #66ffe0;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 14px;
+            border: 1px solid #C3DEDD;
+            border-radius: 12px;
+            background: #F0E2C3;
+            color: #37555D;
             text-decoration: none;
-            margin-right: 10px;
+            transition: background 0.2s ease, color 0.2s ease;
         }
         .links a:hover {
-            text-decoration: underline;
+            background: #82B2C0;
+            color: #FFFFFF;
         }
-        .embed {
-            margin-bottom: 10px;
+        .notes-toggle,
+        .action-button,
+        .mode-toggle {
+            border: 1px solid #C3DEDD;
+            background: #F0E2C3;
+            color: #37555D;
+            padding: 10px 14px;
+            border-radius: 12px;
+            width: fit-content;
         }
-        .notes textarea {
+        .notes-toggle:hover,
+        .action-button:hover,
+        .mode-toggle:hover {
+            background: #82B2C0;
+            color: #FFFFFF;
+        }
+        .notes-toggle {
             width: 100%;
-            height: 100px;
-            font-family: 'Press Start 2P', monospace;
+            text-align: left;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .button-row .danger {
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+        .button-row .danger:hover {
+            background: #ff4444;
+            color: #000;
+        }
+        .hidden {
+            display: none;
+        }
+        .notes-view.collapsed {
+            display: none;
+        }
+        .input-label {
+            display: block;
+            margin-bottom: 10px;
             font-size: 10px;
-            background-color: #111;
-            border: 1px solid #00ffcc;
-            color: #00ffcc;
-            padding: 5px;
+        }
+        .input-label input,
+        .input-label textarea {
+            width: 100%;
+            background-color: #FFFFFF;
+            border: 1px solid #C3DEDD;
+            color: #2E4A59;
+            padding: 10px;
+            margin-top: 5px;
+            font-family: 'Comfortaa', sans-serif;
+            font-size: 14px;
             resize: vertical;
         }
-        .notes textarea:focus {
+        .input-label input:focus,
+        .input-label textarea:focus {
             outline: none;
             border-color: #66ffe0;
+        }
+        .input-label textarea {
+            min-height: 100px;
+        }
+        .recipe-section {
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: 11px;
+            margin-bottom: 6px;
+            color: #37555D;
+            text-transform: uppercase;
+        }
+        .tags-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #C3DEDD;
+            color: #37555D;
+            font-size: 12px;
         }
         .embed iframe {
             width: 100%;
@@ -92,13 +212,17 @@
             body {
                 font-size: 10px;
             }
-
             #search {
                 font-size: 14px;
             }
-
-            .notes textarea {
+            .notes textarea,
+            .input-label input,
+            .input-label textarea {
                 font-size: 12px;
+            }
+            .recipe summary {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -107,63 +231,14 @@
     <h1>Recipes</h1>
     <input type="text" id="search" placeholder="Search recipes...">
     <button onclick="addRecipe()">+ Add Recipe</button>
-    <div id="recipes">
-        <!-- Sample Recipe 1 -->
-        <details class="recipe" data-id="recipe1">
-            <summary>Spaghetti Carbonara</summary>
-            <div class="recipe-content">
-                <div class="recipe-text">Ingredients:
-- 200g spaghetti
-- 100g pancetta
-- 2 eggs
-- 50g parmesan
-- Black pepper
-
-Instructions:
-1. Cook spaghetti.
-2. Fry pancetta.
-3. Mix eggs and cheese.
-4. Combine all.</div>
-                <div class="links">
-                    <a href="https://www.youtube.com/watch?v=example1" target="_blank">YouTube Video</a>
-                    <a href="https://example.com/article1" target="_blank">Article</a>
-                </div>
-                <div class="embed" data-youtube="https://www.youtube.com/watch?v=example1"></div>
-                <div class="notes">
-                    <textarea placeholder="Your notes..."></textarea>
-                </div>
-            </div>
-        </details>
-        <!-- Sample Recipe 2 -->
-        <details class="recipe" data-id="recipe2">
-            <summary>Chicken Stir Fry</summary>
-            <div class="recipe-content">
-                <div class="recipe-text">Ingredients:
-- 300g chicken
-- Vegetables
-- Soy sauce
-
-Instructions:
-1. Cut chicken.
-2. Stir fry.
-3. Add sauce.</div>
-                <div class="links">
-                    <a href="https://example.com/article2" target="_blank">Article</a>
-                </div>
-                <div class="embed"></div>
-                <div class="notes">
-                    <textarea placeholder="Your notes..."></textarea>
-                </div>
-            </div>
-        </details>
-    </div>
+    <div id="recipes"></div>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { 
-    getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc 
+    getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, query, orderBy, onSnapshot, deleteField 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { 
-    getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged 
+    getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
@@ -184,83 +259,335 @@ Instructions:
     const provider = new GoogleAuthProvider();
 
     let currentUser = null;
+    const searchInput = document.getElementById("search");
+
+    let unsubscribeRecipes = null;
+    let recipeCards = new Map();
 
     onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUser = user;
-        loadRecipes();
+        startRecipeListener();
     } else {
-        signInWithPopup(auth, provider);
+        try {
+            signInWithRedirect(auth, provider);
+        } catch (error) {
+            console.error('Auth redirect failed', error);
+        }
     }
     });
 
-    // 📦 Load recipes
-    async function loadRecipes() {
+    searchInput.addEventListener("input", applySearchFilter);
+
+    function applySearchFilter() {
+    const query = searchInput.value.toLowerCase().trim();
+    document.querySelectorAll('.recipe').forEach(card => {
+        const title = card.querySelector('.title-label')?.textContent.toLowerCase() || '';
+        const ingredients = card.querySelector('.ingredients-view')?.textContent.toLowerCase() || '';
+        const instructions = card.querySelector('.instructions-view')?.textContent.toLowerCase() || '';
+        const notes = card.querySelector('.notes-view')?.textContent.toLowerCase() || '';
+        const linkText = card.querySelector('.links.view')?.textContent.toLowerCase() || '';
+        const tags = card.querySelector('.tags-row')?.textContent.toLowerCase() || '';
+        const match = title.includes(query) || ingredients.includes(query) || instructions.includes(query) || notes.includes(query) || linkText.includes(query) || tags.includes(query);
+        card.style.display = match || query === '' ? '' : 'none';
+        if (match && query !== '') {
+            card.setAttribute('open', '');
+        }
+    });
+    }
+
+    function startRecipeListener() {
     const container = document.getElementById("recipes");
-    container.innerHTML = "";
+    const recipesQuery = query(collection(db, "recipes"), orderBy("title", "asc"));
 
-    const querySnapshot = await getDocs(collection(db, "recipes"));
+    if (unsubscribeRecipes) {
+        unsubscribeRecipes();
+        recipeCards.clear();
+    }
 
-    querySnapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const id = docSnap.id;
+    unsubscribeRecipes = onSnapshot(recipesQuery, snapshot => {
+        container.innerHTML = "";
+        recipeCards.clear();
 
-        const el = createRecipeElement(id, data);
-        container.appendChild(el);
+        snapshot.forEach(docSnap => {
+            const id = docSnap.id;
+            const data = docSnap.data();
+            const card = createRecipeElement(id, data);
+            container.appendChild(card);
+            recipeCards.set(id, card);
+        });
+
+        applySearchFilter();
     });
     }
 
-    // 🧱 Create UI element
+    // 🧱 Create UI element with view/edit mode
     function createRecipeElement(id, data) {
     const details = document.createElement("details");
     details.className = "recipe";
 
-    details.innerHTML = `
-        <summary contenteditable="true">${data.title}</summary>
-        <div class="recipe-content">
-        <textarea class="recipe-text">${data.text}</textarea>
-        
-        <input class="link-input" value="${data.link || ""}" placeholder="Link..." />
-        
-        <div class="notes">
-            <textarea placeholder="Notes...">${data.notes || ""}</textarea>
-        </div>
+    const ingredients = data.ingredients || '';
+    const instructions = data.instructions || '';
+    const linksArray = Array.isArray(data.links) ? data.links : [];
+    const tagsArray = Array.isArray(data.tags) ? data.tags : [];
+    const youtube = data.youtube || '';
+    const safeTitle = escapeHtml(data.title || 'Untitled Recipe');
+    const safeIngredients = escapeHtml(ingredients || 'No ingredients added yet.');
+    const safeInstructions = escapeHtml(instructions || 'No instructions added yet.');
+    const safeNotes = escapeHtml(data.notes || 'No notes yet.');
+    const safeTags = tagsArray.map(tag => escapeHtml(tag));
+    const safeLinks = linksArray;
+    const safeYoutube = escapeHtml(youtube);
 
-        <button class="save">Save</button>
-        <button class="delete">Delete</button>
+    details.innerHTML = `
+        <summary>
+            <span class="title-label">${safeTitle}</span>
+            <button type="button" class="mode-toggle">Edit</button>
+        </summary>
+        <div class="recipe-content">
+            <div class="view-mode">
+                <div class="recipe-section">
+                    <div class="section-title">Ingredients</div>
+                    <div class="recipe-text ingredients-view">${safeIngredients}</div>
+                </div>
+                <div class="recipe-section">
+                    <div class="section-title">Instructions</div>
+                    <div class="recipe-text instructions-view">${safeInstructions}</div>
+                </div>
+                <div class="recipe-section tags-section">
+                    <div class="section-title">Tags</div>
+                    <div class="tags-row">${createTagsMarkup(safeTags)}</div>
+                </div>
+                <div class="recipe-section links view">${createLinksMarkup(safeLinks)}</div>
+                <div class="recipe-section embed">${createYoutubeMarkup(safeYoutube)}</div>
+                <button type="button" class="notes-toggle">Show notes</button>
+                <div class="notes-view collapsed">${safeNotes}</div>
+                <div class="button-row">
+                    <button type="button" class="edit action-button">Edit</button>
+                    <button type="button" class="delete action-button danger">Delete</button>
+                </div>
+            </div>
+            <div class="edit-mode hidden">
+                <label class="input-label">Title
+                    <input class="title-input" value="${safeTitle}" />
+                </label>
+                <label class="input-label">Ingredients
+                    <textarea class="ingredients-input">${escapeHtml(ingredients || '')}</textarea>
+                </label>
+                <label class="input-label">Instructions
+                    <textarea class="instructions-input">${escapeHtml(instructions || '')}</textarea>
+                </label>
+                <label class="input-label">Links (one URL per line)
+                    <textarea class="links-input">${linksArray.join('\n')}</textarea>
+                </label>
+                <label class="input-label">Tags (comma separated)
+                    <input class="tags-input" value="${escapeHtml(tagsArray.join(', '))}" placeholder="pasta, chicken, quick" />
+                </label>
+                <label class="input-label">YouTube URL
+                    <input class="youtube-input" value="${safeYoutube}" placeholder="https://www.youtube.com/watch?v=..." />
+                </label>
+                <label class="input-label">Notes
+                    <textarea class="notes-input">${escapeHtml(data.notes || '')}</textarea>
+                </label>
+                <div class="button-row">
+                    <button type="button" class="save action-button">Save</button>
+                    <button type="button" class="cancel action-button">Cancel</button>
+                </div>
+            </div>
         </div>
     `;
 
-    // Save
-    details.querySelector(".save").onclick = async () => {
-        await updateDoc(doc(db, "recipes", id), {
-        title: details.querySelector("summary").innerText,
-        text: details.querySelector(".recipe-text").value,
-        link: details.querySelector(".link-input").value,
-        notes: details.querySelector(".notes textarea").value
-        });
-        alert("Saved!");
-    };
+    const viewMode = details.querySelector('.view-mode');
+    const editMode = details.querySelector('.edit-mode');
+    const modeToggle = details.querySelector('.mode-toggle');
+    const editButton = details.querySelector('.edit');
+    const cancelButton = details.querySelector('.cancel');
+    const saveButton = details.querySelector('.save');
+    const deleteButton = details.querySelector('.delete');
+    const notesToggle = details.querySelector('.notes-toggle');
+    const notesView = details.querySelector('.notes-view');
+    const titleLabel = details.querySelector('.title-label');
+    const ingredientsView = details.querySelector('.ingredients-view');
+    const instructionsView = details.querySelector('.instructions-view');
+    const linksView = details.querySelector('.links.view');
+    const embedArea = details.querySelector('.embed');
 
-    // Delete
-    details.querySelector(".delete").onclick = async () => {
-        await deleteDoc(doc(db, "recipes", id));
-        details.remove();
-    };
+    const titleInput = details.querySelector('.title-input');
+    const ingredientsInput = details.querySelector('.ingredients-input');
+    const instructionsInput = details.querySelector('.instructions-input');
+    const linksInput = details.querySelector('.links-input');
+    const tagsInput = details.querySelector('.tags-input');
+    const youtubeInput = details.querySelector('.youtube-input');
+    const notesInput = details.querySelector('.notes-input');
+
+    function updateView() {
+        titleLabel.textContent = titleInput.value.trim() || 'Untitled Recipe';
+        ingredientsView.textContent = ingredientsInput.value.trim() || 'No ingredients added yet.';
+        instructionsView.textContent = instructionsInput.value.trim() || 'No instructions added yet.';
+        linksView.innerHTML = createLinksMarkup(parseLinks(linksInput.value));
+        embedArea.innerHTML = createYoutubeMarkup(youtubeInput.value.trim());
+        notesView.textContent = notesInput.value.trim() || 'No notes yet.';
+    }
+
+    function setMode(isEdit) {
+        if (isEdit) {
+            viewMode.classList.add('hidden');
+            editMode.classList.remove('hidden');
+            modeToggle.textContent = 'Cancel';
+        } else {
+            viewMode.classList.remove('hidden');
+            editMode.classList.add('hidden');
+            modeToggle.textContent = 'Edit';
+        }
+    }
+
+    function resetEditFields() {
+        titleInput.value = data.title || '';
+        ingredientsInput.value = data.ingredients || '';
+        instructionsInput.value = data.instructions || '';
+        linksInput.value = (Array.isArray(data.links) ? data.links.join('\n') : data.link ? data.link : '');
+        tagsInput.value = Array.isArray(data.tags) ? data.tags.join(', ') : '';
+        youtubeInput.value = data.youtube || '';
+        notesInput.value = data.notes || '';
+    }
+
+    modeToggle.addEventListener('click', event => {
+        event.stopPropagation();
+        setMode(editMode.classList.contains('hidden'));
+    });
+
+    editButton.addEventListener('click', () => setMode(true));
+    cancelButton.addEventListener('click', () => {
+        resetEditFields();
+        setMode(false);
+    });
+
+    notesToggle.addEventListener('click', () => {
+        const hidden = notesView.classList.toggle('collapsed');
+        notesToggle.textContent = hidden ? 'Show notes' : 'Hide notes';
+    });
+
+    saveButton.addEventListener('click', async () => {
+        const updated = {
+            title: titleInput.value.trim() || 'Untitled Recipe',
+            ingredients: ingredientsInput.value.trim(),
+            instructions: instructionsInput.value.trim(),
+            links: parseLinks(linksInput.value),
+            tags: parseTags(tagsInput.value),
+            youtube: youtubeInput.value.trim(),
+            notes: notesInput.value,
+            text: deleteField(),
+            link: deleteField()
+        };
+
+        try {
+            await updateDoc(doc(db, 'recipes', id), updated);
+            const cleaned = { ...data, ...updated };
+            delete cleaned.text;
+            delete cleaned.link;
+            data = cleaned;
+            updateView();
+            setMode(false);
+        } catch (error) {
+            console.error('Save failed', error);
+            alert('Unable to save recipe. Please try again.');
+        }
+    });
+
+    deleteButton.addEventListener('click', async () => {
+        try {
+            await deleteDoc(doc(db, 'recipes', id));
+            details.remove();
+        } catch (error) {
+            console.error('Delete failed', error);
+            alert('Unable to delete recipe. Please try again.');
+        }
+    });
+
+    details.querySelector('.mode-toggle').addEventListener('mousedown', event => event.stopPropagation());
+    details.querySelector('.edit').addEventListener('mousedown', event => event.stopPropagation());
+    details.querySelector('.save').addEventListener('mousedown', event => event.stopPropagation());
+    details.querySelector('.cancel').addEventListener('mousedown', event => event.stopPropagation());
 
     return details;
     }
 
+    function createLinksMarkup(links) {
+    if (!links || !links.length) {
+        return '<div class="section-title">Links</div><div>No quick links yet.</div>';
+    }
+    return `<div class="section-title">Links</div>${links.map(link => isSafeUrl(link) ? `<a href="${escapeHtml(link)}" target="_blank" rel="noreferrer">${escapeHtml(link)}</a>` : `<span>${escapeHtml(link)}</span>`).join('')}`;
+    }
+
+    function createTagsMarkup(tags) {
+    if (!tags || !tags.length) {
+        return '<div class="tag-pill">No tags defined</div>';
+    }
+    return tags.map(tag => `<span class="tag-pill">${escapeHtml(tag)}</span>`).join('');
+    }
+
+    function createYoutubeMarkup(url) {
+    if (!url) {
+        return '<div class="section-title">Video</div><div>No video configured.</div>';
+    }
+    const id = getYoutubeVideoId(url);
+    if (!id) {
+        return isSafeUrl(url)
+            ? `<div class="section-title">Video</div><a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Open media link</a>`
+            : `<div class="section-title">Video</div><div>${escapeHtml(url)}</div>`;
+    }
+    return `<div class="section-title">Video</div><iframe src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
+    }
+
+    function parseLinks(text) {
+    return String(text || '').split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+    }
+
+    function parseTags(text) {
+    return String(text || '').split(/\s*,\s*/).map(tag => tag.trim()).filter(Boolean);
+    }
+
+    function isSafeUrl(url) {
+    return /^https?:\/\//i.test(String(url || '').trim());
+    }
+
+    function getYoutubeVideoId(url) {
+    const match = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+    if (match) return match[1];
+    const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+    return shortMatch ? shortMatch[1] : null;
+    }
+
+    function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     // ➕ Add new recipe
     window.addRecipe = async () => {
-    const docRef = await addDoc(collection(db, "recipes"), {
-        title: "New Recipe",
-        text: "",
-        link: "",
-        notes: ""
-    });
+    const title = prompt("Recipe name?");
+    if (!title || !title.trim()) {
+        return;
+    }
 
-    loadRecipes();
+    try {
+        await addDoc(collection(db, "recipes"), {
+            title: title.trim(),
+            ingredients: "",
+            instructions: "",
+            links: [],
+            tags: [],
+            youtube: "",
+            notes: ""
+        });
+    } catch (error) {
+        console.error('Create recipe failed', error);
+        alert('Unable to create recipe. Please try again.');
+    }
     };
 </script>
 </body>
