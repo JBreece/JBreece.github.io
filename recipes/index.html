@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-84ZYJ5JBC8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-84ZYJ5JBC8');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipes</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --text-scale: 1;
+        }
         body {
             font-family: 'Comfortaa', sans-serif;
             background-color: #F2EAE0;
@@ -13,17 +25,19 @@
             margin: 0;
             padding: 20px;
             line-height: 1.6;
+            font-size: calc(16px * var(--text-scale));
         }
         h1 {
             text-align: center;
             color: #5B7E7F;
             margin-bottom: 16px;
+            font-size: calc(28px * var(--text-scale));
         }
         #search {
-            width: 100%;
+            width: min(100%, 400px);
             padding: 14px 16px;
             font-family: 'Comfortaa', sans-serif;
-            font-size: 12px;
+            font-size: calc(16px * var(--text-scale));
             background-color: #FFFFFF;
             border: 2px solid #C3DEDD;
             color: #2E4A59;
@@ -38,7 +52,7 @@
         }
         .recipe {
             margin-bottom: 16px;
-            border: 1px solid #C3DEDD;
+            border: 2px solid #EFD1D4;
             border-radius: 16px;
             overflow: hidden;
             background-color: #FFFFFF;
@@ -50,14 +64,14 @@
             gap: 10px;
             padding: 18px 18px 14px;
             background-color: #DCECE9;
-            border-bottom: 1px solid #C3DEDD;
+            border-bottom: 2px solid #EFD1D4;
         }
         .recipe summary:hover {
             background-color: #E9F4F2;
         }
         .title-label {
             display: block;
-            font-size: 22px;
+            font-size: calc(28px * var(--text-scale));
             font-weight: 700;
             line-height: 1.1;
             letter-spacing: 0.02em;
@@ -74,24 +88,26 @@
             margin: 0;
             line-height: 1.6;
             color: #3F5C62;
+            font-size: calc(16px * var(--text-scale));
         }
         .recipe-section {
             padding: 16px;
-            border: 1px solid #E9F4F2;
+            border: 2px solid #EFD1D4;
             border-radius: 14px;
             background: #F6F2EC;
         }
         .recipe-section.links {
-            border-color: transparent;
+            border-color: #EFD1D4;
             background: transparent;
             padding: 0;
         }
         .section-title {
-            font-size: 10px;
+            font-size: calc(12px * var(--text-scale));
             margin-bottom: 10px;
             color: #37555D;
             text-transform: uppercase;
             letter-spacing: 0.16em;
+            font-weight: 600;
         }
         .links {
             display: flex;
@@ -103,12 +119,13 @@
             display: inline-flex;
             align-items: center;
             padding: 10px 14px;
-            border: 1px solid #C3DEDD;
+            border: 2px solid #EFD1D4;
             border-radius: 12px;
             background: #F0E2C3;
             color: #37555D;
             text-decoration: none;
             transition: background 0.2s ease, color 0.2s ease;
+            font-size: calc(14px * var(--text-scale));
         }
         .links a:hover {
             background: #82B2C0;
@@ -117,12 +134,15 @@
         .notes-toggle,
         .action-button,
         .mode-toggle {
-            border: 1px solid #C3DEDD;
+            border: 2px solid #EFD1D4;
             background: #F0E2C3;
             color: #37555D;
-            padding: 10px 14px;
+            padding: 12px 16px;
             border-radius: 12px;
             width: fit-content;
+            font-size: calc(14px * var(--text-scale));
+            font-family: 'Comfortaa', sans-serif;
+            cursor: pointer;
         }
         .notes-toggle:hover,
         .action-button:hover,
@@ -133,6 +153,25 @@
         .notes-toggle {
             width: 100%;
             text-align: left;
+        }
+        .add-recipe-btn {
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #82B2C0 0%, #5B9DAC 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-size: calc(16px * var(--text-scale));
+            font-family: 'Comfortaa', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 20px;
+            display: block;
+            box-shadow: 0 4px 12px rgba(91, 157, 172, 0.3);
+        }
+        .add-recipe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(91, 157, 172, 0.4);
         }
 
         .button-row {
@@ -158,27 +197,28 @@
         .input-label {
             display: block;
             margin-bottom: 10px;
-            font-size: 10px;
+            font-size: calc(12px * var(--text-scale));
         }
         .input-label input,
         .input-label textarea {
             width: 100%;
             background-color: #FFFFFF;
-            border: 1px solid #C3DEDD;
+            border: 2px solid #EFD1D4;
             color: #2E4A59;
-            padding: 10px;
-            margin-top: 5px;
+            padding: 12px;
+            margin-top: 8px;
             font-family: 'Comfortaa', sans-serif;
-            font-size: 14px;
+            font-size: calc(28px * var(--text-scale));
             resize: vertical;
         }
         .input-label input:focus,
         .input-label textarea:focus {
             outline: none;
-            border-color: #66ffe0;
+            border-color: #82B2C0;
+            box-shadow: 0 0 0 3px rgba(130,178,192,0.2);
         }
         .input-label textarea {
-            min-height: 100px;
+            min-height: 120px;
         }
         .recipe-section {
             margin-bottom: 16px;
@@ -197,11 +237,12 @@
         .tag-pill {
             display: inline-flex;
             align-items: center;
-            padding: 8px 12px;
+            padding: 10px 14px;
             border-radius: 999px;
             background: #C3DEDD;
             color: #37555D;
-            font-size: 12px;
+            font-size: calc(13px * var(--text-scale));
+            border: 2px solid #EFD1D4;
         }
         .embed iframe {
             width: 100%;
@@ -210,28 +251,65 @@
         }
         @media (max-width: 600px) {
             body {
-                font-size: 10px;
+                font-size: calc(14px * var(--text-scale));
             }
             #search {
-                font-size: 14px;
+                font-size: calc(16px * var(--text-scale));
             }
             .notes textarea,
             .input-label input,
             .input-label textarea {
-                font-size: 12px;
+                font-size: calc(20px * var(--text-scale));
             }
             .recipe summary {
                 flex-direction: column;
                 align-items: flex-start;
             }
         }
+        .text-size-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            background: #FFFFFF;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #EFD1D4;
+            box-shadow: 0 4px 12px rgba(81,103,111,0.15);
+            z-index: 1000;
+        }
+        .text-size-controls button {
+            padding: 8px 12px;
+            border: 1px solid #C3DEDD;
+            background: #F0E2C3;
+            color: #37555D;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Comfortaa', sans-serif;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .text-size-controls button:hover {
+            background: #82B2C0;
+            color: #FFFFFF;
+        }
+        .text-size-controls button.active {
+            background: #82B2C0;
+            color: #FFFFFF;
+        }
     </style>
 </head>
 <body>
     <h1>Recipes</h1>
     <input type="text" id="search" placeholder="Search recipes...">
-    <button onclick="addRecipe()">+ Add Recipe</button>
+    <button class="add-recipe-btn" onclick="addRecipe()">+ Add Recipe</button>
     <div id="recipes"></div>
+    <div class="text-size-controls">
+        <button class="text-size-btn" data-scale="0.85">A-</button>
+        <button class="text-size-btn active" data-scale="1">A</button>
+        <button class="text-size-btn" data-scale="1.25">A+</button>
+    </div>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { 
@@ -240,6 +318,49 @@
     import { 
     getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    // 🎨 Text Size Controls
+    document.querySelectorAll('.text-size-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const scale = btn.dataset.scale;
+            document.documentElement.style.setProperty('--text-scale', scale);
+            document.querySelectorAll('.text-size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            localStorage.setItem('textScale', scale);
+        });
+    });
+
+    // Load saved text scale
+    const savedScale = localStorage.getItem('textScale') || '1';
+    document.documentElement.style.setProperty('--text-scale', savedScale);
+    document.querySelector(`.text-size-btn[data-scale="${savedScale}"]`)?.classList.add('active');
+
+    // 📝 Text Formatting Functions
+    function formatIngredientsText(text) {
+        return String(text || '')
+            .split('\n')
+            .map(line => line.trim())
+            .filter(Boolean)
+            .map(line => {
+                line = line.replace(/^[-•*]\s*/, '').trim();
+                return line ? `• ${line}` : '';
+            })
+            .filter(Boolean)
+            .join('\n');
+    }
+
+    function formatInstructionsText(text) {
+        return String(text || '')
+            .split('\n')
+            .map(line => line.trim())
+            .filter(Boolean)
+            .map((line, index) => {
+                line = line.replace(/^\d+\.\s*/, '').trim();
+                return line ? `${index + 1}. ${line}` : '';
+            })
+            .filter(Boolean)
+            .join('\n');
+    }
 
     const firebaseConfig = {
     apiKey: "AIzaSyB6WuV4Ax9v9Q9o8Ahi60a9Qh8400qFqY8",
@@ -420,6 +541,17 @@
     const youtubeInput = details.querySelector('.youtube-input');
     const notesInput = details.querySelector('.notes-input');
 
+    // Add formatting on blur for ingredients and instructions
+    ingredientsInput.addEventListener('blur', () => {
+        ingredientsInput.value = formatIngredientsText(ingredientsInput.value);
+        updateView();
+    });
+
+    instructionsInput.addEventListener('blur', () => {
+        instructionsInput.value = formatInstructionsText(instructionsInput.value);
+        updateView();
+    });
+
     function updateView() {
         titleLabel.textContent = titleInput.value.trim() || 'Untitled Recipe';
         ingredientsView.textContent = ingredientsInput.value.trim() || 'No ingredients added yet.';
@@ -468,10 +600,14 @@
     });
 
     saveButton.addEventListener('click', async () => {
+        // Format text before saving
+        const formattedIngredients = formatIngredientsText(ingredientsInput.value.trim());
+        const formattedInstructions = formatInstructionsText(instructionsInput.value.trim());
+
         const updated = {
             title: titleInput.value.trim() || 'Untitled Recipe',
-            ingredients: ingredientsInput.value.trim(),
-            instructions: instructionsInput.value.trim(),
+            ingredients: formattedIngredients,
+            instructions: formattedInstructions,
             links: parseLinks(linksInput.value),
             tags: parseTags(tagsInput.value),
             youtube: youtubeInput.value.trim(),
