@@ -317,6 +317,21 @@
             background: #5B7E7F;
             color: #FFFFFF;
         }
+        .wake-lock-button {
+            padding: 8px 12px;
+            border: 1px solid #C3DEDD;
+            background: #F0E2C3;
+            color: #37555D;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Comfortaa', sans-serif;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .wake-lock-button.active {
+            background: #5B7E7F;
+            color: #FFFFFF;
+        }
         body.dark-mode {
             background-color: #3D3635;
             color: #E8DBD7;
@@ -491,6 +506,7 @@
             <button class="text-size-btn active" data-scale="1">A</button>
             <button class="text-size-btn" data-scale="1.25">A+</button>
             <button type="button" class="dark-mode-button" id="darkModeToggle">Dark</button>
+            <button type="button" class="wake-lock-button" id="wakeLockToggle">Awake</button>
         </div>
     </div>
 <script type="module">
@@ -532,6 +548,54 @@
         darkModeButton.classList.toggle('active', isDark);
         darkModeButton.textContent = isDark ? 'Light' : 'Dark';
         localStorage.setItem('darkModeEnabled', String(isDark));
+    });
+
+    // Wake lock toggle
+    const wakeLockButton = document.getElementById('wakeLockToggle');
+    let wakeLock = null;
+    async function enableWakeLock() {
+        try {
+            wakeLock = await navigator.wakeLock.request('screen');
+
+            wakeLockButton.classList.add('active');
+            wakeLockButton.textContent = 'Awake On';
+
+            console.log('Wake lock enabled');
+
+            wakeLock.addEventListener('release', () => {
+                console.log('Wake lock released');
+
+                wakeLockButton.classList.remove('active');
+                wakeLockButton.textContent = 'Awake';
+
+                wakeLock = null;
+            });
+
+        } catch (err) {
+            console.error('Wake lock failed:', err);
+            alert('Wake lock not supported on this device/browser.');
+        }
+    }
+    async function disableWakeLock() {
+        if (wakeLock) {
+            await wakeLock.release();
+            wakeLock = null;
+        }
+
+        wakeLockButton.classList.remove('active');
+        wakeLockButton.textContent = 'Awake';
+    }
+    wakeLockButton.addEventListener('click', async () => {
+        if (wakeLock) {
+            await disableWakeLock();
+        } else {
+            await enableWakeLock();
+        }
+    });
+    document.addEventListener('visibilitychange', async () => {
+        if (wakeLock !== null && document.visibilityState === 'visible') {
+            await enableWakeLock();
+        }
     });
 
     // 📝 Text Formatting Functions
