@@ -246,7 +246,7 @@
             border: 2px solid #EFD1D4;
         }
         .embed iframe {
-            width: 100%;
+            width: 90%;
             height: auto;
             aspect-ratio: 16 / 9;
         }
@@ -325,6 +325,12 @@
         body.dark-mode .recipe summary {
             background-color: #4B413F;
             border-bottom-color: #EFD1D4;
+        }
+        body.dark-mode .recipe-section {
+            padding: 16px;
+            border: 2px solid #EFD1D4;
+            border-radius: 14px;
+            background: #4B413F;
         }
         body.dark-mode .recipe {
             box-shadow: 0 20px 40px rgba(0,0,0,0.25);
@@ -658,8 +664,9 @@
     });
 
     notesToggle.addEventListener('click', () => {
-        const hidden = notesView.classList.toggle('collapsed');
-        notesToggle.textContent = hidden ? 'Show notes' : 'Hide notes';
+        const isCollapsed = !notesView.classList.contains('collapsed');
+        notesView.classList.toggle('collapsed');
+        notesToggle.textContent = isCollapsed ? 'Show notes' : 'Hide notes';
     });
 
     saveButton.addEventListener('click', async () => {
