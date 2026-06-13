@@ -132,6 +132,15 @@ button:hover {
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
+#restaurantList li.disabled {
+  opacity: 0.55;
+  filter: grayscale(0.2);
+}
+
+#restaurantList li.disabled:hover {
+  background: rgba(255,255,255,0.9);
+}
+
 /* Small accent border on active mode */
 body.veto .card {
   border: 2px solid #d9534f;
@@ -196,9 +205,9 @@ body:not(.veto) .card {
   <script>
 let vetoMode = false;
     let restaurants = JSON.parse(localStorage.getItem('restaurants')) || [
-      { name: "Chipotle", tags: ["Mexican", "Fast Casual"] },
-      { name: "Subway", tags: ["Sandwich", "Fast Food"] },
-      { name: "Panda Express", tags: ["Asian", "Fast Food"] },
+      { name: "Chipotle", tags: ["Mexican", "Fast Casual"], enabled: true },
+      { name: "Subway", tags: ["Sandwich", "Fast Food"], enabled: true },
+      { name: "Panda Express", tags: ["Asian", "Fast Food"], enabled: true },
     ];
 
     let activeFilters = [];
@@ -211,6 +220,13 @@ let vetoMode = false;
 
     function drawWheel(items) {
       const canvas = document.getElementById('wheel');
+      const ctx = canvas.getContext('2d');
+      if (items.length === 0) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        wheel = null;
+        return;
+      }
+
       const segments = items.map(r => ({ fillStyle: randomColor(), text: r.name }));
       wheel = new Winwheel({
         canvasId: 'wheel',
@@ -228,6 +244,11 @@ let vetoMode = false;
 
     function announceWinner(segment) {
       alert(`🎉 Winner: ${segment.text}!`);
+    }
+
+    function toggleRestaurantEnabled(index) {
+      restaurants[index].enabled = !restaurants[index].enabled;
+      refreshList();
     }
 	
 	function removeTag(restaurantIndex, tagIndex) {
@@ -254,6 +275,9 @@ let vetoMode = false;
 
 	  restaurants.forEach((r, i) => {
 		const li = document.createElement('li');
+		li.classList.toggle('disabled', !r.enabled);
+		li.title = r.enabled ? 'Click to disable this restaurant' : 'Click to re-enable this restaurant';
+		li.addEventListener('click', () => toggleRestaurantEnabled(i));
 
 		// Restaurant name
 		const nameSpan = document.createElement('strong');
@@ -265,20 +289,24 @@ let vetoMode = false;
 		editBtn.textContent = '✏️';
 		editBtn.title = 'Edit restaurant name';
 		editBtn.style.marginLeft = '6px';
-		editBtn.onclick = () => {
+		editBtn.addEventListener('click', event => {
+		  event.stopPropagation();
 		  const newName = prompt('Rename restaurant:', r.name);
 		  if (newName && newName.trim()) {
 			restaurants[i].name = newName.trim();
 			refreshList();
 		  }
-		};
+		});
 		li.appendChild(editBtn);
 
 		// Remove restaurant button
 		const removeBtn = document.createElement('button');
 		removeBtn.textContent = '✕';
 		removeBtn.title = 'Remove restaurant';
-		removeBtn.onclick = () => removeRestaurant(i);
+		removeBtn.addEventListener('click', event => {
+		  event.stopPropagation();
+		  removeRestaurant(i);
+		});
 		li.appendChild(removeBtn);
 
 		// Tag section
@@ -294,7 +322,10 @@ let vetoMode = false;
 		  tagBtn.style.borderRadius = '6px';
 		  tagBtn.style.background = '#ddd';
 		  tagBtn.style.cursor = 'pointer';
-		  tagBtn.onclick = () => removeTag(i, tagIndex);
+		  tagBtn.addEventListener('click', event => {
+		    event.stopPropagation();
+		    removeTag(i, tagIndex);
+		  });
 		  tagContainer.appendChild(tagBtn);
 		});
 
@@ -312,12 +343,18 @@ let vetoMode = false;
 		addTagBtn.title = 'Add tag';
 		addTagBtn.style.marginLeft = '4px';
 		addTagBtn.style.padding = '4px 8px';
-		addTagBtn.onclick = () => addTag(i, addTagInput);
+		addTagBtn.addEventListener('click', event => {
+		  event.stopPropagation();
+		  addTag(i, addTagInput);
+		});
 
 		// Allow pressing Enter to add tag
 		addTagInput.addEventListener('keypress', e => {
+		  e.stopPropagation();
 		  if (e.key === 'Enter') addTag(i, addTagInput);
 		});
+
+		addTagInput.addEventListener('click', e => e.stopPropagation());
 
 		tagContainer.appendChild(addTagInput);
 		tagContainer.appendChild(addTagBtn);
@@ -403,14 +440,15 @@ document.getElementById('vetoModeBtn').addEventListener('click', () => {
 
 
 function filteredRestaurants() {
-  if (activeFilters.length === 0) return restaurants;
+  const visibleRestaurants = restaurants.filter(r => r.enabled);
+  if (activeFilters.length === 0) return visibleRestaurants;
 
   if (vetoMode) {
     // Exclude restaurants that match ANY active tag
-    return restaurants.filter(r => !r.tags.some(t => activeFilters.includes(t)));
+    return visibleRestaurants.filter(r => !r.tags.some(t => activeFilters.includes(t)));
   } else {
     // Include restaurants that match ANY active tag
-    return restaurants.filter(r => r.tags.some(t => activeFilters.includes(t)));
+    return visibleRestaurants.filter(r => r.tags.some(t => activeFilters.includes(t)));
   }
 }
 
